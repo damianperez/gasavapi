@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
+
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -97,8 +97,8 @@ class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,
 {
      public function model(array $row)
     {
-        return DB::table('users')->insertOrIgnore([
-            "id"=> $row[0],
+        /*return DB::table('users')->insertOrIgnore([
+           "id"=> $row[0],
             "Nro_socio"=> $row[0],
             "Apellido y nombre"=> $row[1],
              "Lugar de pago" => $row[2],
@@ -117,8 +117,9 @@ class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,
       'email'=>$row[7],
             
         ]);
+        */
         return new User([            
-            "id"=> $row[0],
+            //"id"=> $row[0],
             "Nro_socio"=> $row[0],
             "Apellido y nombre"=> $row[1],
              "Lugar de pago" => $row[2],
@@ -145,7 +146,7 @@ class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,
     public function collection(Collection $rows)
     {
         //
-        echo $rows[0];
+       // echo $rows[0];
         
     }
     public function startRow(): int
