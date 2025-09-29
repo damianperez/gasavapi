@@ -24,6 +24,7 @@ class ExcellController extends Controller
         $array = (new GasavImport)->toArray(Storage::disk('local')->path($filePath));        
         
         
+        return response()->json($array);
         return response()->json($array['PADRON']);
         
     }

@@ -26,6 +26,14 @@ class GasavImport implements  WithMultipleSheets ,ToCollection, WithBatchInserts
     }
     public function sheets(): array
     {
+        $wsh=[];
+        for ($i = 0; $i <= 19; $i++) {
+            $wsh[$i]= new FirstSheetImport();
+        };
+        return $wsh;
+         return [
+            new FirstSheetImport()
+        ];
         return [
              0 => new FirstSheetImport(),
             'Cuadro tarifario'=> new FirstSheetImport(),
