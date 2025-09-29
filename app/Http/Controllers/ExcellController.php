@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Imports\GasavImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExcellController extends Controller
 {
@@ -12,7 +15,17 @@ class ExcellController extends Controller
     public function index()
     {
         //
-        return 'Excell ok';
+        $filePath='Agosto 2025.xlsx';
+         if (!Storage::disk('local')->exists($filePath)) {
+        
+                abort(404, 'File not found.',$filePath);
+            }
+        
+        $array = (new GasavImport)->toArray(Storage::disk('local')->path($filePath));        
+        
+        
+        return response()->json($array['PADRON']);
+        
     }
 
     /**
@@ -45,5 +58,9 @@ class ExcellController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function batchSize(): int
+    {
+        return 1000;
     }
 }
