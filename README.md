@@ -1,7 +1,13 @@
 
-
+Gasavapi --
 
 php artisan install:api
+
+git add .
+git commit -m 'pc'
+git push
+
+
 
 
 
