@@ -25,10 +25,11 @@ class ExcellController extends Controller
         
         $import =  new GasavImport();
         $import->onlySheets($hoja);
-        $array = $import->toArray(Storage::disk('local')->path($filePath));        
+        $import->import($filePath, 'local', \Maatwebsite\Excel\Excel::XLSX);
+        //$array = $import->toArray(Storage::disk('local')->path($filePath));        
         #$array = (new GasavImport)->onlySheets($hoja)->toArray(Storage::disk('local')->path($filePath));        
         
-        
+        return 'OK';
         return response()->json($array);
         return response()->json($array['PADRON']);
         
