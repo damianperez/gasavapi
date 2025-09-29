@@ -12,6 +12,7 @@ class ExcellController extends Controller
     public function index()
     {
         //
+        return 'Excell ok';
     }
 
     /**
