@@ -7,21 +7,26 @@ use Illuminate\Support\Facades\Storage;
 use App\Imports\GasavImport;
 use Maatwebsite\Excel\Facades\Excel;
 
+
 class ExcellController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($hoja='todas')
     {
         //
+       // return "Procesando $hoja";
         $filePath='Agosto 2025.xlsx';
          if (!Storage::disk('local')->exists($filePath)) {
                 echo "No encuentro $filePath";
                 //abort(404, 'File not found.',$filePath);
             }
         
-        $array = (new GasavImport)->toArray(Storage::disk('local')->path($filePath));        
+        $import =  new GasavImport();
+        $import->onlySheets($hoja);
+        $array = $import->toArray(Storage::disk('local')->path($filePath));        
+        #$array = (new GasavImport)->onlySheets($hoja)->toArray(Storage::disk('local')->path($filePath));        
         
         
         return response()->json($array);

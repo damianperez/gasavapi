@@ -12,21 +12,28 @@ use Maatwebsite\Excel\Concerns\HasReferencesToOtherSheets;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithConditionalSheets;
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+
 
 class GasavImport implements  WithMultipleSheets ,ToCollection, WithBatchInserts, WithChunkReading, ShouldQueue
 {
     use Importable; // Use the trait
+    use WithConditionalSheets;
 
     
     public function collection(Collection $collection)
     {
         //
     }
+    /*   
     public function sheets(): array
     {
-        $wsh=[];
+
+        
+        /*$wsh=[];
         for ($i = 0; $i <= 19; $i++) {
             $wsh[$i]= new FirstSheetImport();
         };
@@ -34,6 +41,7 @@ class GasavImport implements  WithMultipleSheets ,ToCollection, WithBatchInserts
          return [
             new FirstSheetImport()
         ];
+      
         return [
              0 => new FirstSheetImport(),
             'Cuadro tarifario'=> new FirstSheetImport(),
@@ -43,8 +51,10 @@ class GasavImport implements  WithMultipleSheets ,ToCollection, WithBatchInserts
             'VELEROS' => new FirstSheetImport(),
             'SECUESTRADOS' => new FirstSheetImport(),
         ];
+        
     }
-     public function onUnknownSheet($sheetName)
+        */
+    public function onUnknownSheet($sheetName)
     {
         // E.g. you can log that a sheet was not found.
         info("Sheet {$sheetName} was skipped");
@@ -52,9 +62,9 @@ class GasavImport implements  WithMultipleSheets ,ToCollection, WithBatchInserts
     public function conditionalSheets(): array
     {
         return [
-            'Worksheet 1' => new FirstSheetImport(),
-            'Worksheet 2' => new SecondSheetImport(),
-            'Worksheet 3' => new ThirdSheetImport(),
+            'PADRON' => new PADRONImport(),
+            'Worksheet 2' => new FirstSheetImport(),
+            'Worksheet 3' => new FirstSheetImport(),
         ];
     }
     public function batchSize(): int
@@ -66,8 +76,26 @@ class GasavImport implements  WithMultipleSheets ,ToCollection, WithBatchInserts
         return 1000;
     }
 }
-class FirstSheetImport implements ToArray, ToCollection , HasReferencesToOtherSheets //, WithCalculatedFormulas
+class PADRONImport implements ToArray, ToCollection, HasReferencesToOtherSheets //, WithCalculatedFormulas
+{    
+    public function array(array $row)
+    {
+        
+    }
+    public function collection(Collection $rows)
+    {
+        //
+        echo $rows[0];
+        
+    }
+}
+class FirstSheetImport implements ToArray, ToCollection,SkipsUnknownSheets , HasReferencesToOtherSheets //, WithCalculatedFormulas
 {
+    public function onUnknownSheet($sheetName)
+    {
+        // E.g. you can log that a sheet was not found.
+        info("Sheet {$sheetName} was skipped");
+    }
     public function array(array $row)
     {
         
