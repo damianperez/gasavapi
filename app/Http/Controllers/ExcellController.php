@@ -17,8 +17,8 @@ class ExcellController extends Controller
         //
         $filePath='Agosto 2025.xlsx';
          if (!Storage::disk('local')->exists($filePath)) {
-        
-                abort(404, 'File not found.',$filePath);
+                echo "No encuentro $filePath";
+                //abort(404, 'File not found.',$filePath);
             }
         
         $array = (new GasavImport)->toArray(Storage::disk('local')->path($filePath));        
@@ -59,8 +59,5 @@ class ExcellController extends Controller
     {
         //
     }
-    public function batchSize(): int
-    {
-        return 1000;
-    }
+    
 }
