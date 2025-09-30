@@ -96,7 +96,8 @@ class GasavImport implements  WithMultipleSheets ,ToModel, WithChunkReading,With
 class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,WithChunkReading,WithBatchInserts,WithStartRow, WithCalculatedFormulas
 {
      public function model(array $row)
-    {
+    {   
+        return $row;
         /*return DB::table('users')->insertOrIgnore([
            "id"=> $row[0],
             "Nro_socio"=> $row[0],
@@ -135,8 +136,7 @@ class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,
       "Observaciones"=>$row[12],
       "Antiguedad"=>$row[13],
       "Observaciones Comision Directiva"=>$row[14],
-      'email'=>$row[7],
-            
+      'email'=>$row[7],1            
         ]);
     }    
     public function array(array $row)
