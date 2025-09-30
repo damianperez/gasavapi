@@ -115,8 +115,7 @@ class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,
       "Observaciones"=>$row[12],
       "Antiguedad"=>$row[13],
       "Observaciones Comision Directiva"=>$row[14],
-      'email'=>$row[7],
-            
+      'email'=>$row[7],            
         ]);
         */
         return new User([            
