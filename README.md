@@ -7,9 +7,6 @@ git add .
 git commit -m 'pc'
 git push
 
-
-
-
  php artisan make:model Padron -mcr 
 ## About Laravel
 
