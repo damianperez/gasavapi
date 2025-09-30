@@ -93,7 +93,7 @@ class GasavImport implements  WithMultipleSheets ,ToModel, WithChunkReading,With
     }
 }
 //class PADRONImport implements ToArray, ToCollection, HasReferencesToOtherSheets //, WithCalculatedFormulas
-class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,WithChunkReading,WithBatchInserts,WithStartRow//, WithCalculatedFormulas
+class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,WithChunkReading,WithBatchInserts,WithStartRow, WithCalculatedFormulas
 {
      public function model(array $row)
     {
