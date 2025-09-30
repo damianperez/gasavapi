@@ -24,12 +24,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 
 //class GasavImport implements  WithMultipleSheets ,ToModel, WithBatchInserts, WithChunkReading, ShouldQueue
-class GasavImport implements  WithMultipleSheets ,ToModel, WithChunkReading,WithBatchInserts, WithHeadingRow
+class GasavImport implements  WithMultipleSheets ,ToArray,ToModel, WithChunkReading,WithBatchInserts, WithHeadingRow
 {
     use Importable; // Use the trait
     use WithConditionalSheets;
 
-    
+    public function array(array $array)
+    {
+        // This method receives the entire sheet as an array.
+        // You can perform any processing here if needed,
+        // but for a simple conversion to array, you might not need to modify this.
+        return $array;
+    }
     public function model(array $row)
     {
         return new User([
