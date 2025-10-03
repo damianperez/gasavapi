@@ -12,3 +12,4 @@ Route::get('/', function (Request $request) {
     return 'Hola';
 });
 Route::get('/excell/{hoja?}', [ExcellController::class,'index']);
+Route::get('/spread/{hoja?}', [ExcellController::class,'spread']);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Imports\GasavImport;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 
 class ExcellController extends Controller
@@ -17,19 +18,26 @@ class ExcellController extends Controller
     {
         //
        // return "Procesando $hoja";
+       set_time_limit(120);
         $filePath='Agosto 2025.xlsx';
          if (!Storage::disk('local')->exists($filePath)) {
                 echo "No encuentro $filePath";
                 //abort(404, 'File not found.',$filePath);
             }
         
+        $hoja='PADRON';
         $import =  new GasavImport();
-        $import->onlySheets($hoja);
-        // $import->import($filePath, 'local', \Maatwebsite\Excel\Excel::XLSX);
-        $array = $import->toArray(Storage::disk('local')->path($filePath));        
-        #$array = (new GasavImport)->onlySheets($hoja)->toArray(Storage::disk('local')->path($filePath));        
+
+       $import->onlySheets('Cuadro tarifario','PADRON','Valores vigentes','Pagos');
+
+       //Excel::import($import, Storage::disk('local')->path($filePath));
+       // $import->import($filePath, 'local', \Maatwebsite\Excel\Excel::XLSX);
+       $array = $import->onlySheets($hoja)->toArray(Storage::disk('local')->path($filePath));        
+      // $array = $import->toArray(Storage::disk('local')->path($filePath));        
         
-       // return 'OK';
+        
+        //return 'OK';
+        
         return response()->json($array);
         return response()->json($array['PADRON']);
         
@@ -38,9 +46,34 @@ class ExcellController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function spread(Request $request)
     {
-        //
+        set_time_limit(240);
+        $filePath='Agosto 2025.xlsx';
+        if (!Storage::disk('local')->exists($filePath)) {
+                echo "No encuentro $filePath";
+                //abort(404, 'File not found.',$filePath);
+        }
+        $spreadsheet = IOFactory::load(Storage::disk('local')->path($filePath));
+        foreach ($spreadsheet->getAllSheets() as $sheet) {
+            foreach ($sheet->getRowIterator() as $row) {
+                foreach ($row->getCellIterator() as $cell) {
+                    // Get the calculated value of the cell
+                    
+                
+                    //$value = $cell->getCalculatedValue(); 
+                    if ($cell->isFormula())
+                    $cell->setValue($cell->getCalculatedValue()); // Replace formula with its value
+                    // You can then store or process this $value as needed
+                    // For example, if you're building a PHP array:
+                    // $data[$sheet->getTitle()][$row->getRowIndex()][$cell->getColumn()] = $value;
+                }
+            }
+        }
+    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx'); // Or 'Csv', 'Html', etc.
+    $writer->save('new_excel_file_with_values.xlsx');
+
+    
     }
 
     /**

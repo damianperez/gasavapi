@@ -24,7 +24,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 
 //class GasavImport implements  WithMultipleSheets ,ToModel, WithBatchInserts, WithChunkReading, ShouldQueue
-class GasavImport implements  WithMultipleSheets ,ToArray,ToModel, WithChunkReading,WithBatchInserts, WithHeadingRow
+class GasavImport implements  WithMultipleSheets ,ToArray, WithHeadingRow
 {
     use Importable; // Use the trait
     use WithConditionalSheets;
@@ -36,74 +36,89 @@ class GasavImport implements  WithMultipleSheets ,ToArray,ToModel, WithChunkRead
         // but for a simple conversion to array, you might not need to modify this.
         return $array;
     }
-    public function model(array $row)
-    {
-        return new User([
-            'name' => $row[0],
-        ]);
-    }
-    public function collection(Collection $collection)
-    {
-        //
-    }
-    /*   
-    public function sheets(): array
-    {
+   
 
-        
-        /*$wsh=[];
-        for ($i = 0; $i <= 19; $i++) {
-            $wsh[$i]= new FirstSheetImport();
-        };
-        return $wsh;
-         return [
-            new FirstSheetImport()
-        ];
       
-        return [
-             0 => new FirstSheetImport(),
-            'Cuadro tarifario'=> new FirstSheetImport(),
-            'Valores vigentes'=> new FirstSheetImport(),
-            'Pagos' => new FirstSheetImport(),
-            'PADRON' => new FirstSheetImport(),            
-            'VELEROS' => new FirstSheetImport(),
-            'SECUESTRADOS' => new FirstSheetImport(),
-        ];
-        
-    }
-        */
-    public function onUnknownSheet($sheetName)
-    {
-        // E.g. you can log that a sheet was not found.
-        info("Sheet {$sheetName} was skipped");
-    }
     public function conditionalSheets(): array
     {
-        return [
-            'PADRON' => new PADRONImport(),
-            'Worksheet 2' => new FirstSheetImport(),
-            'Worksheet 3' => new FirstSheetImport(),
+
+        return [             
+           'Cuadro tarifario'=> new CuadroTarifarioImport(),
+           'PADRON' => new PADRONImport(),            
+           'Valores vigentes'=> new CuadroTarifarioImport(),
+           'Pagos' => new PagosImport(),            
+            
         ];
+        
+        
+        
     }
-    public function batchSize(): int
+    
+}
+class CuadroTarifarioImport implements ToArray, ToCollection,HasReferencesToOtherSheets 
+{   
+    public function array(array $row)
     {
-        return 100;
+      //  return 'aa';
     }
-    public function chunkSize(): int
+    public function collection(Collection $rows)
+    {    
+      //echo $rows[0];
+    }
+}
+
+
+
+
+class PagosImport implements ToArray, ToCollection,HasReferencesToOtherSheets  #,  WithCalculatedFormulas,HasReferencesToOtherSheets
+{
+  
+    public function array(array $row)
     {
-        return 100;
+     //   return 'ab';    
+        
+    }    
+    public function collection(Collection $rows)
+    {
+        //
+       // echo $rows[0];
+       //   return ['ac'];
+        
     }
-     public function startRow(): int
+        
+    
+    public function startRow(): int
     {
         return 2;
     }
+    public function batchSize(): int
+    {
+        return 500;
+    }
+    public function chunkSize(): int
+    {
+        return 500;
+    }
 }
-//class PADRONImport implements ToArray, ToCollection, HasReferencesToOtherSheets //, WithCalculatedFormulas
-class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,WithChunkReading,WithBatchInserts,WithStartRow, WithCalculatedFormulas
+class PADRONImport implements ToArray, ToCollection,HasReferencesToOtherSheets  ,  WithCalculatedFormulas
 {
-     public function model(array $row)
+  
+    public function array(array $row)
+    {
+     //   return 'ab';    
+        
+    }    
+    public function collection(Collection $rows)
+    {
+        //
+       // echo $rows[0];
+       //   return ['ac'];
+        
+    }
+        
+    public function model(array $row)
     {   
-        return $row;
+       // return ['aa'];
         /*return DB::table('users')->insertOrIgnore([
            "id"=> $row[0],
             "Nro_socio"=> $row[0],
@@ -123,7 +138,6 @@ class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,
       "Observaciones Comision Directiva"=>$row[14],
       'email'=>$row[7],            
         ]);
-        */
         return new User([            
             //"id"=> $row[0],
             "Nro_socio"=> $row[0],
@@ -143,17 +157,9 @@ class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,
       "Observaciones Comision Directiva"=>$row[14],
       'email'=>$row[7],1            
         ]);
-    }    
-    public function array(array $row)
-    {
-        
-    }
-    public function collection(Collection $rows)
-    {
-        //
-       // echo $rows[0];
-        
-    }
+        */
+
+    }  
     public function startRow(): int
     {
         return 2;
@@ -167,25 +173,4 @@ class PADRONImport implements ToModel, ToCollection, HasReferencesToOtherSheets,
         return 500;
     }
 }
-class FirstSheetImport implements ToArray, ToCollection,SkipsUnknownSheets , HasReferencesToOtherSheets //, WithCalculatedFormulas
-{
-    public function startRow(): int
-    {
-        return 2;
-    }
-    public function onUnknownSheet($sheetName)
-    {
-        // E.g. you can log that a sheet was not found.
-        info("Sheet {$sheetName} was skipped");
-    }
-    public function array(array $row)
-    {
-        
-    }
-    public function collection(Collection $rows)
-    {
-        //
-        //echo $rows[0];
-        
-    }
-}
+
