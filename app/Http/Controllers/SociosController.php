@@ -13,6 +13,9 @@ class SociosController extends Controller
         // Use the 'mysql_secondary' connection instead of the default
         $users = DB::connection('mariagasav')->select('SELECT * FROM users');
 
-        return view('secondary.users', ['users' => $users]);
+        foreach ($users as $user) {
+                echo $user->name;
+}
+        return ;
     }
 }
