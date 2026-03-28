@@ -13,7 +13,7 @@ Route::get('/', function (Request $request) {
 });
 <<<<<<< HEAD
 Route::get('/socios', function (Request $request) {
-    return 'Hola';
+    return 'Hola socios';
 });
 
 Route::get('/excell/{hoja?}', [ExcellController::class,'index']);
