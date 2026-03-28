@@ -14,7 +14,12 @@ class SociosController extends Controller
         $users = DB::connection('mariagasav')->select('SELECT * FROM users');
 
         foreach ($users as $user) {
-                echo $user->name;
+                echo 
+                $user->Nro_socio.
+	//$user->`Apellido y nombre`.
+	//$user->`Lugar de pago`.
+	$user->Actividad. 
+	$user->Domicilio; 
 }
         return ;
     }
