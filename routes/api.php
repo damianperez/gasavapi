@@ -11,4 +11,8 @@ Route::get('/user', function (Request $request) {
 Route::get('/', function (Request $request) {
     return 'Hola';
 });
+Route::get('/socios', function (Request $request) {
+    return 'Hola';
+});
+
 Route::get('/excell/{hoja?}', [ExcellController::class,'index']);
