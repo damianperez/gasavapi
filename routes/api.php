@@ -11,13 +11,12 @@ Route::get('/user', function (Request $request) {
 Route::get('/', function (Request $request) {
     return 'Hola';
 });
-<<<<<<< HEAD
 Route::get('/socios', function (Request $request) {
     return 'Hola socios';
 });
 
 Route::get('/excell/{hoja?}', [ExcellController::class,'index']);
-=======
+
 Route::get('/excell/{hoja?}', [ExcellController::class,'index']);
 Route::get('/spread/{hoja?}', [ExcellController::class,'spread']);
->>>>>>> 320dfcc6d0d54f9b820580e4e8717d5d8c826c3c
+
