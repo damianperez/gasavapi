@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Response; // Import Response facade if not using 
 class SociosController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {        
         $p1 = $request->route('p1');
         $p2 = $request->route('p2');
