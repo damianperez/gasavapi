@@ -12,7 +12,7 @@ Route::get('/user', function (Request $request) {
 Route::get('/', function (Request $request) {
     return 'Hola';
 });
-Route::get('/socios',  [SociosController::class,'index']);
+Route::get('/socios[/p1[/p2[/p3[/p4]]]]',  [SociosController::class,'index']);
 
 Route::get('/excell/{hoja?}', [ExcellController::class,'index']);
 

@@ -10,9 +10,26 @@ class SociosController extends Controller
 {
     //
     public function index()
-    {
-        // Use the 'mysql_secondary' connection instead of the default
-        $users = DB::connection('mariagasav')->select('SELECT * FROM users');
+    {        
+        $p1 = $request->route('p1');
+        $p2 = $request->route('p2');
+        $p3 = $request->route('p3');
+        $p4 = $request->route('p4');
+
+        $SQL = 'SELECT * FROM users';
+        if ($p1) {
+            $SQL .= " WHERE Nro_socio='$p1'";
+        }
+        if ($p2) {
+            $SQL .= " AND `Apellido y nombre`='$p2'";
+        }
+        if ($p3) {
+            $SQL .= " AND `Lugar de pago`='$p3'";
+        }
+        if ($p4) {
+            $SQL .= " AND Actividad='$p4'";
+        }
+        $users = DB::connection('mariagasav')->select($SQL);
         return response()->json($users);
         foreach ($users as $user) {
                 echo 
