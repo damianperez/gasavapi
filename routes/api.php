@@ -17,6 +17,5 @@ Route::get('/socios', function (Request $request) {
 
 Route::get('/excell/{hoja?}', [ExcellController::class,'index']);
 
-Route::get('/excell/{hoja?}', [ExcellController::class,'index']);
 Route::get('/spread/{hoja?}', [ExcellController::class,'spread']);
 
