@@ -10,7 +10,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/', function (Request $request) {
-    return 'Hola';
+    return 'Hola Torre';
 });
 Route::get('/socios/{p1?}/{p2?}/{p3?}/{p4?}',  [SociosController::class,'index']);
 
